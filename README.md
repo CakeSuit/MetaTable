@@ -137,7 +137,7 @@ echo $user->meta->get('age'); // 26
 echo $user->meta->fetch('age'); // 26
 echo $user->meta->fetch('age.id', null); // 1
 
-// Check has ID : has('sexe.meta_value')
+// Check has ID : has($key)
 echo $user->meta->has('sexe'); // true
 echo $user->meta->has('sexe.id'); // true
 echo $user->meta->has('sexe.other'); // false
