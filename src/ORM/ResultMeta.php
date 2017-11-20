@@ -42,7 +42,9 @@ class ResultMeta
     public function initialize()
     {
         $collection = new Collection($this->getOriginalItems());
-        $this->_items = $collection->indexBy($this->getConfig('keyField'));
+        $this->_items = $collection
+            ->indexBy($this->getConfig('keyField'))
+            ->toArray();
         $valueField = $this->getConfig('valueField');
 
         foreach ($this->_items as $name => $item) {
@@ -50,7 +52,7 @@ class ResultMeta
             if (!$valueField) {
                 $valueField = $table->getDisplayField();
             }
-            $this->{$name} = $item{$valueField};
+            $this->set($name, $item{$valueField});
         }
     }
 
@@ -59,14 +61,84 @@ class ResultMeta
         // Silent is gold
     }
 
-    public function get($key, $default = null)
+    /**
+     * Get de properties
+     * @param $properties
+     * @param null $default
+     * @return null|void
+     */
+    public function get($properties, $default = null)
     {
+        if (isset($this->{$properties})) {
+            $default = $this->{$properties};
+        }
+        return $default;
+    }
+
+    public function set($key, $value)
+    {
+        $this->{$key} = $value;
+    }
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return mixed
+     */
+    public function fetch($key, $default = null)
+    {
+        $key = $this->_formatKey($key);
         return Hash::get($this->_items, $key, $default);
     }
 
+    /**
+     * Chack if the path exist
+     * @param $key
+     * @return bool
+     */
     public function has($key)
     {
-        return Hash::check($this->_items, $key, null);
+        $key = $this->_formatKey($key);
+        return Hash::check($this->_items, $key);
+    }
+
+    /**
+     * Check if empty value
+     * @param $key
+     * @return bool
+     */
+    public function isEmpty($key)
+    {
+        $key = $this->_formatKey($key);
+        $val = $this->get($key, null);
+        return empty($val);
+    }
+
+    /**
+     * Check equal value
+     * @param $expected
+     * @param $key
+     * @param bool $strict
+     * @return bool
+     */
+    public function equalTo($expected, $key, $strict = false)
+    {
+        $key = $this->_formatKey($key);
+        $key = $this->fetch($key);
+        if ($strict) {
+            return $expected === $key;
+        } else {
+            return $expected == $key;
+        }
+    }
+
+    /**
+     * Check if metas is empty
+     * @return bool
+     */
+    public function isEmptyMetas()
+    {
+        return !((bool)count($this->_items));
     }
 
     /**
@@ -83,5 +155,14 @@ class ResultMeta
     public function getItems()
     {
         return $this->_items;
+    }
+
+    protected function _formatKey($key)
+    {
+        if (strpos($key, '.') === false)
+        {
+            $key .= '.' . $this->getConfig('valueField');
+        }
+        return $key;
     }
 }

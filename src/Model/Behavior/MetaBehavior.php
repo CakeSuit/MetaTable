@@ -9,7 +9,6 @@ use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Cakesuit\MetaTable\ORM\ResultMeta;
-use Cakesuit\MetaTable\ORM\Result;
 
 /**
  * Meta behavior
@@ -35,7 +34,7 @@ class MetaBehavior extends Behavior
          * true: insert into object entities
          * both: meta & object entities
          */
-        'addProperties' => true,
+        'addProperties' => 'both',
     ];
 
     protected $_metaTableName;

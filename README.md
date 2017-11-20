@@ -98,7 +98,7 @@ class UsersTable extends Table
             /**
              * Method for save meta 
              * Required: false
-             * Default: true
+             * Default: 'both'
              * false: insert into meta
              * true: insert into object entities
              * both: meta & object entities
@@ -115,22 +115,49 @@ Fetch meta:
 
 $usersTable = \Cake\ORM\TableRegistry::get('Users');
 
-$user = $usersTable->get(
-    1, 
-    [
-        'contain' => ['MetaUsers']
-    ]);
+$user = $usersTable->get(1, [
+    'contain' => ['MetaUsers']
+]);
     
 
 echo $user->username; // cakesuit
 
-// With addProperties (true or both) in behavior config
+// With addProperties (true) in behavior config
 echo $user->age; // 26
 echo $user->sexe; // male
 
 // Without addProperties (false) in behavior config
 echo $user->meta->age; // 26
 echo $user->meta->sexe; // male
+
+// Get age value
+echo $user->meta->get('age'); // 26
+
+// Fetch the entity ID : get($key, default)
+echo $user->meta->fetch('age'); // 26
+echo $user->meta->fetch('age.id', null); // 1
+
+// Check has ID : has('sexe.meta_value')
+echo $user->meta->has('sexe'); // true
+echo $user->meta->has('sexe.id'); // true
+echo $user->meta->has('sexe.other'); // false
+
+// Check if empty value : isEmpty($key)
+echo $user->meta->isEmpty('sexe'); // false
+echo $user->meta->isEmpty('sexe.meta_value'); // false
+echo $user->meta->isEmpty('other'); // true
+
+// Check equal value : equalTo($expected, $key, strict = false)
+echo $user->meta->equalTo('male', 'sexe', false); // true
+echo $user->meta->equalTo(1, 'age.id', true); // true
+if ($user->meta->equalTo('26', 'age', true)) {
+    // Return cakesuit is 26 years old
+    echo sprintf(
+        '%s is %d years old', 
+        $user->username,
+        $user->age // or $user->meta->gat('age') 
+    );
+}
 ```
 
 ## ...
