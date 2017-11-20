@@ -1,5 +1,5 @@
 {
-    "name": "Cakesuit/MetaTable",
+    "name": "cakesuit/metatable",
     "description": "Cakesuit/MetaTable plugin for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",
