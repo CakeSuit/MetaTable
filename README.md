@@ -33,16 +33,20 @@ CREATE table meta_users (
 );
 ```
 Insert user row:
+
 | id | username | password |
 |-----|:-----:|---------:|
 |1|cakesuit|12345|
+
+Insert user meta row:
 
 | id | meta_key | meta_value | user_id |
 |-----|:-----:|---------:|:------:|
 |1|age|26|1|
 |2|sexe|male|1|
 
-Config Table Users:
+
+Config UsersTable:
 ```php
 <?php
 
@@ -60,7 +64,8 @@ class UsersTable extends Table
        $this->hasMany('MetaUsers', [
            'foreignKey' => 'user_id',
        ]);
-
+        
+       // Add behavior
         $this->addBehavior('Cakesuit/MetaTable.Meta', [
             /**
              * Define meta table name
