@@ -133,7 +133,7 @@ echo $user->meta->sexe; // male
 // Get age value
 echo $user->meta->get('age'); // 26
 
-// Fetch the entity ID : get($key, default)
+// Fetch the entity ID : fetch($key, default)
 echo $user->meta->fetch('age'); // 26
 echo $user->meta->fetch('age.id', null); // 1
 
