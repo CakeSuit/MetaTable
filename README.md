@@ -36,7 +36,7 @@ Insert user row:
 
 | id | username | password |
 |-----|:-----:|---------:|
-|1|cakesuit|12345|
+|1|Cakesuit|12345|
 
 Insert user meta row:
 
@@ -120,7 +120,7 @@ $user = $usersTable->get(1, [
 ]);
     
 
-echo $user->username; // cakesuit
+echo $user->username; // Cakesuit
 
 // With addProperties (true) in behavior config
 echo $user->age; // 26
@@ -151,7 +151,7 @@ echo $user->meta->isEmpty('other'); // true
 echo $user->meta->equalTo('male', 'sexe', false); // true
 echo $user->meta->equalTo(1, 'age.id', true); // true
 if ($user->meta->equalTo('26', 'age', true)) {
-    // Return cakesuit is 26 years old
+    // Return Cakesuit is 26 years old
     echo sprintf(
         '%s is %d years old', 
         $user->username,
